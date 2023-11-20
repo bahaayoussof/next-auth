@@ -4,12 +4,6 @@ import { useSession, signOut } from "next-auth/react";
 
 function MainNavigation() {
 	const { data: session, status } = useSession();
-	console.log(
-		"file: main-navigation.js:7 ~ MainNavigation ~ session, status:",
-		session,
-		status
-	);
-
 	const logoutHandler = () => {
 		signOut();
 	};
@@ -21,7 +15,7 @@ function MainNavigation() {
 			</Link>
 			<nav>
 				<ul>
-					{!session && status === "unauthenticated" && (
+					{!session && status !== "loading" && (
 						<li>
 							<Link href="/auth">Login</Link>
 						</li>
@@ -31,9 +25,11 @@ function MainNavigation() {
 							<Link href="/profile">Profile</Link>
 						</li>
 					)}
-					<li>
-						<button onClick={logoutHandler}>Logout</button>
-					</li>
+					{session && (
+						<li>
+							<button onClick={logoutHandler}>Logout</button>
+						</li>
+					)}
 				</ul>
 			</nav>
 		</header>
